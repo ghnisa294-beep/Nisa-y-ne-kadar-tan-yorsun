@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Yazılım Sorumluluk Sınavı</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0f172a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:18px}.card{background:#1e293b;border-radius:22px;padding:22px;box-shadow:0 8px 30px #0005}
+h1{font-size:28px;margin:0 0 10px}h2{font-size:21px;line-height:1.35}.sub{color:#cbd5e1;line-height:1.5}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.pill{background:#334155;border-radius:999px;padding:8px 12px;font-size:14px}
+button{width:100%;border:0;border-radius:15px;padding:16px;margin-top:10px;background:#334155;color:#fff;font-size:17px;font-weight:600;touch-action:manipulation}
+button:active{transform:scale(.99)}#start,#next,.again{background:#2563eb}.hidden{display:none}
+.correct{background:#15803d!important}.wrong{background:#b91c1c!important}
+.bar{height:10px;background:#334155;border-radius:10px;overflow:hidden;margin:15px 0}.fill{height:100%;width:0;background:#22c55e}
+.info{margin-top:15px;background:#0f172a;border-radius:14px;padding:14px;line-height:1.5}
+.small{font-size:13px;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="card" id="home">
+<h1>🎮 Yazılım Görevi</h1>
+<p class="sub">Eylül'deki Yazılım Geliştirme sorumluluk sınavına hazırlan. Doğru cevapla puan kazan, yanlışta konuyu öğren. İnsanlık nihayet sınav çalışmayı biraz daha katlanılır hale getirdi.</p>
+<div class="stats"><span class="pill">🎯 Hedef: 70+</span><span class="pill">❤️ 3 Can</span><span class="pill">🏆 20 Görev</span></div>
+<button id="start">BAŞLA</button>
+<p class="small">Konular: Python • Algoritma • HTML • CSS • Donanım • Mblock • Programlama</p>
+</section>
+
+<section class="card hidden" id="game">
+<div class="stats"><span class="pill" id="qno"></span><span class="pill" id="score"></span><span class="pill" id="lives"></span></div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<h2 id="question"></h2><div id="answers"></div>
+<div id="info" class="info hidden"></div>
+<button id="next" class="hidden">SONRAKİ SORU ➜</button>
+</section>
+
+<section class="card hidden" id="result">
+<h1>🏁 Sonuç</h1><h2 id="resultText"></h2><p class="sub" id="advice"></p>
+<button class="again" onclick="location.reload()">TEKRAR OYNA</button>
+</section>
+</div>
+<script>
+const Q=[
+["Algoritma nedir?",["Bir programlama dili","Bir problemi çözmek için adım adım işlem sırası","Bir donanım parçası","İnternet bağlantısı"],1,"Algoritma, bir problemi çözmek için izlenen mantıklı ve sıralı adımlardır."],
+["Python'da ekrana çıktı vermek için hangisi kullanılır?",["input()","print()","output()","show()"],1,"print() ekrana bilgi yazdırır."],
+["Python'da tam sayı veri tipi hangisidir?",["str","float","int","bool"],2,"int tam sayıları tutar. Örneğin: yas = 17"],
+["Metin veri tipi Python'da hangisidir?",["int","str","float","bool"],1,"str metinleri tutar. Örneğin: ad = 'Nisa'"],
+["if-else ne işe yarar?",["Koşula göre işlem seçmeye","Dosya açmaya","Bilgisayarı kapatmaya","Resim oluşturmaya"],0,"if koşul doğru olduğunda, else diğer durumda çalışır."],
+["HTML dosyasının uzantısı hangisidir?",[".css",".py",".html",".exe"],2,"HTML dosyaları genellikle .html uzantılıdır."],
+["CSS ne için kullanılır?",["Web sayfasının görünümünü düzenlemek","İşlemciyi çalıştırmak","Veri depolamak","Virüs temizlemek"],0,"CSS renk, yazı, boyut, hizalama gibi görünüm özelliklerini düzenler."],
+["Sayfanın alt bölümünü belirtmek için hangi HTML etiketi kullanılır?",["<head>","<body>","<footer>","<title>"],2,"footer sayfanın alt bölümünü ifade eder."],
+["En büyük başlık etiketi hangisidir?",["<h6>","<h3>","<header>","<h1>"],3,"h1 en üst düzey başlıktır."],
+["CSS'de çerçevenin kalınlığını hangi özellik belirler?",["background","border-width","font-size","text-align"],1,"border-width çerçevenin kalınlığını belirler."],
+["Bilgisayarın temel işlem birimi hangisidir?",["RAM","SSD","CPU","Monitör"],2,"CPU yani işlemci komutları işler."],
+["RAM nedir?",["Kalıcı depolama","Geçici çalışma belleği","Ekran","İnternet kartı"],1,"RAM, bilgisayar çalışırken kullanılan geçici bellektir."],
+["SSD ve HDD'nin temel görevi nedir?",["Depolama","Soğutma","Görüntü verme","Ses üretme"],0,"SSD ve HDD veri depolamak için kullanılır."],
+["Mblock hangi alanda kullanılabilir?",["Blok tabanlı programlama ve robotik","Sadece yazı yazma","Sadece video izleme","Sadece hesaplama"],0,"mBlock blok tabanlı programlama ve robotik projelerde kullanılır."],
+["Değişken nedir?",["Değişebilen değerleri tutan isimlendirilmiş alan","Bilgisayar kasası","Kablo","Ekran"],0,"Örneğin puan = 80 ifadesinde puan bir değişkendir."],
+["bool veri tipi hangi değerleri temsil eder?",["1 ve 2","A ve B","True ve False","Metin ve sayı"],2,"bool mantıksal doğru/yanlış değerlerini temsil eder."],
+["Debugging ne demektir?",["Hata ayıklama","Dosya sıkıştırma","Resim çizme","Program yükleme"],0,"Debugging programdaki hataları bulup düzeltme işlemidir."],
+["Akış şemasında karar sembolü genellikle hangisidir?",["Daire","Dikdörtgen","Elmas","Üçgen"],2,"Karar/koşul adımları elmas şekliyle gösterilir."],
+["Hangisi programlama dilidir?",["Python","HTML","RAM","CSS"],0,"Python bir programlama dilidir. HTML ise işaretleme dilidir."],
+["HTML'de kalın yazı için hangisi kullanılabilir?",["<b>","<i>","<u>","<p>"],0,"<b> metni kalın gösterir; <i> italik, <u> altı çizili görünüm verir."]
+];
+let i=0,score=0,lives=3,locked=false;
+const $=x=>document.getElementById(x);
+$("start").onclick=()=>{$("home").classList.add("hidden");$("game").classList.remove("hidden");show()};
+function show(){
+locked=false;let q=Q[i];$("qno").textContent=`Soru ${i+1}/${Q.length}`;$("score").textContent=`Puan ${score}`;$("lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);$("fill").style.width=(i/Q.length*100)+"%";$("question").textContent=q[0];$("answers").innerHTML="";$("info").classList.add("hidden");$("next").classList.add("hidden");
+q[1].forEach((a,n)=>{let b=document.createElement("button");b.textContent=a;b.onclick=()=>answer(n,b);$("answers").appendChild(b)})
+}
+function answer(n,b){
+if(locked)return;locked=true;let q=Q[i];let bs=[...$("answers").children];bs.forEach((x,k)=>{x.disabled=true;if(k===q[2])x.classList.add("correct")});
+if(n===q[2]){score+=5;b.classList.add("correct");$("info").textContent="✅ Doğru! "+q[3]}else{lives--;b.classList.add("wrong");$("info").textContent="❌ Yanlış. "+q[3]}
+$("score").textContent=`Puan ${score}`;$("lives").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);$("info").classList.remove("hidden");$("next").classList.remove("hidden")
+}
+$("next").onclick=()=>{i++;if(i>=Q.length||lives<=0)finish();else show()};
+function finish(){
+$("game").classList.add("hidden");$("result").classList.remove("hidden");let pct=score; $("resultText").textContent=`${score}/100 puan`;
+$("advice").textContent=pct>=70?"🔥 Geçer seviyedesin. Yanlışlarını tekrar et, sınavda da sakin kal.":pct>=50?"📚 Temel var ama biraz daha tekrar şart. Özellikle yanlış çıkan konuları çalış.":"🛠️ Bu tur teşhis turuydu. Yanlışların hangi konularda olduğunu görüp bir tur daha çöz.";
+}
+</script>
+</body></html>
