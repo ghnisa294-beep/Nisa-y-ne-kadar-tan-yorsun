@@ -1,186 +1,262 @@
-# yaz-l-m-oyunu
-# Sorumluluk Sınavı Oyunu 🎮
+import time
 
-Bu proje, öğrencilerin sorumluluk sınavlarına hazırlanmasına yardımcı olmak amacıyla hazırlanmış eğlenceli bir soru-cevap oyunudur.
+def yaz(metin):
+    print(metin)
+    time.sleep(0.5)
 
-## 🎯 Özellikler
+while True:
 
-- Çoktan seçmeli sorular
-- Doğru ve yanlış cevap kontrolü
-- Puan sistemi
-- Sınav sonunda sonuç gösterme
-- Basit ve kullanışlı arayüz
+    print("\n" + "=" * 45)
+    print("        NISA'YI NE KADAR TANIYORSUN?")
+    print("=" * 45)
 
-## 💻 Kullanılan Teknolojiler
+    oyuncu = input("\nAdin ne? ")
 
-- HTML
-- CSS
-- JavaScript
-
-## 🚀 Nasıl Çalıştırılır?
-
-1. Projeyi GitHub'dan indirin.
-2. `index.html` dosyasını açın.
-3. Oyun tarayıcıda çalışacaktır.
-
-## 📁 Dosyalar
-
-- `index.html` → Ana sayfa
-- `style.css` → Tasarım ve görünüm
-- `script.js` → Oyunun kodları
-- `README.md` → Proje hakkında bilgiler
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yazılım Sorumluluk Sınavı Oyunu</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1e2e;
-            color: #cdd6f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .quiz-container {
-            background-color: #313244;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            width: 450px;
-            max-width: 90%;
-            text-align: center;
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-        .easy { background-color: #a6e3a1; color: #11111b; }
-        .medium { background-color: #f9e2af; color: #11111b; }
-        .hard { background-color: #f38ba8; color: #11111b; }
-        
-        h2 { font-size: 18px; margin-bottom: 20px; height: 50px; }
-        .btn-grid { display: grid; gap: 10px; }
-        button {
-            background-color: #45475a;
-            color: #cdd6f4;
-            border: 2px solid transparent;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        button:hover { background-color: #585b70; }
-        .correct { background-color: #a6e3a1 !important; color: #11111b; font-weight: bold; }
-        .wrong { background-color: #f38ba8 !important; color: #11111b; font-weight: bold; }
-        .score { font-size: 14px; color: #a6adc8; margin-top: 15px; }
-    </style>
-</head>
-<body>
-
-<div class="quiz-container" id="quiz">
-    <div id="badge" class="badge easy">Kolay Seviye</div>
-    <h2 id="question">Soru yükleniyor...</h2>
-    <div class="btn-grid" id="answer-buttons"></div>
-    <div class="score" id="score">Puan: 0</div>
-</div>
-
-<script>
-const questions = [
-    // Kolay Sorular
-    { level: "easy", label: "Kolay", q: "Web sayfalarının temel iskeletini oluşturmak için hangi dil kullanılır?", options: ["CSS", "HTML", "Python", "SQL"], answer: 1 },
-    { level: "easy", label: "Kolay", q: "Aşağıdakilerden hangi veri tipi metinsel ifadeleri tutar?", options: ["Integer", "Boolean", "String", "Float"], answer: 2 },
-    { level: "easy", label: "Kolay", q: "Bir döngüyü tamamen sonlandırmak için hangi anahtar kelime kullanılır?", options: ["continue", "exit", "stop", "break"], answer: 3 },
+    print("\nHos geldin", oyuncu + "!")
+    print("Bu oyunda Nisa hakkinda 20 soru var.")
+    print("Her dogru cevap 1 puan.")
+    print("Hazirsan basliyoruz...")
     
-    // Orta Sorular
-    { level: "medium", label: "Orta", q: "Nesne Yönelimli Programlamada (OOP) sınıf şablonundan türetilen yapılara ne denir?", options: ["Object (Nesne)", "Function (Fonksiyon)", "Variable (Değişken)", "Array (Dizi)"], answer: 0 },
-    { level: "medium", label: "Orta", q: "İki durumu (True/False) kontrol eden mantıksal veri tipi hangisidir?", options: ["Char", "Boolean", "Double", "String"], answer: 1 },
-    { level: "medium", label: "Orta", q: "Veritabanından veri çekmek için kullanılan temel SQL komutu hangisidir?", options: ["INSERT", "UPDATE", "SELECT", "DELETE"], answer: 2 },
-    
-    // Zor Sorular
-    { level: "hard", label: "Zor", q: "Hangisi 'FIFO' (First In First Out - İlk Giren İlk Çıkar) prensibiyle çalışır?", options: ["Stack (Yığın)", "Queue (Kuyruk)", "Tree (Ağaç)", "Graph (Graf)"], answer: 1 },
-    { level: "hard", label: "Zor", q: "OOP'de bir sınıfın başka bir sınıftan özellik mirası almasına ne ad verilir?", options: ["Polymorphism", "Encapsulation", "Inheritance", "Abstraction"], answer: 2 },
-    { level: "hard", label: "Zor", q: "Zaman karmaşıklığı O(1) olan bir işlem ne anlama gelir?", options: ["Girdi boyutu artsa da işlem süresi sabittir", "Her adımda işlem süresi ikiye katlanır", "Girdi boyutuyla orantılı artar", "En yavaş algoritma türüdür"], answer: 0 }
-];
+    time.sleep(2)
 
-let currentQ = 0;
-let score = 0;
+    puan = 0
+    seri = 0
 
-const questionEl = document.getElementById("question");
-const badgeEl = document.getElementById("badge");
-const buttonsEl = document.getElementById("answer-buttons");
-const scoreEl = document.getElementById("score");
+    sorular = [
 
-function loadQuestion() {
-    buttonsEl.innerHTML = "";
-    const q = questions[currentQ];
-    
-    questionEl.innerText = q.q;
-    badgeEl.innerText = `${q.label} Seviye (${currentQ + 1}/${questions.length})`;
-    badgeEl.className = `badge ${q.level}`;
+        {
+            "soru": "Nisa'nin en sevdigi yemek hangisidir?",
+            "secenekler": ["Pizza", "Manti", "Tavuklu pilav", "Hamburger"],
+            "cevap": "C"
+        },
 
-    q.options.forEach((opt, index) => {
-        const btn = document.createElement("button");
-        btn.innerText = opt;
-        btn.onclick = () => checkAnswer(index, q.answer);
-        buttonsEl.appendChild(btn);
-    });
-}
+        {
+            "soru": "Nisa'nin sevmedigi bir yemek var mi?",
+            "secenekler": ["Evet, bir suru var", "Sadece sebze yemegi",
+                           "Sadece balik", "Yok"],
+            "cevap": "D"
+        },
 
-function checkAnswer(selected, correct) {
-    const btns = buttonsEl.getElementsByTagName("button");
-    if (selected === correct) {
-        btns[selected].classList.add("correct");
-        score += 10;
-    } else {
-        btns[selected].classList.add("wrong");
-        btns[correct].classList.add("correct");
-    }
+        {
+            "soru": "Nisa bos zamaninda en cok ne yapmayi sever?",
+            "secenekler": ["Kitap okumak", "Yeni filmler izlemek",
+                           "Spor yapmak", "Yemek yapmak"],
+            "cevap": "B"
+        },
 
-    scoreEl.innerText = `Puan: ${score}`;
+        {
+            "soru": "Nisa'nin en sevdigi renk hangisidir?",
+            "secenekler": ["Siyah", "Pembe", "Mavi", "Beyaz"],
+            "cevap": "D"
+        },
 
-    Array.from(btns).forEach(b => b.disabled = true);
+        {
+            "soru": "Nisa'nin en sevdigi sarkici kimdir?",
+            "secenekler": ["Ahmet Kaya", "Tarkan", "Sezen Aksu", "Mabel Matiz"],
+            "cevap": "A"
+        },
 
-    setTimeout(() => {
-        currentQ++;
-        if (currentQ < questions.length) {
-            loadQuestion();
-        } else {
-            showResult();
+        {
+            "soru": "Nisa'nin en sevdigi sarki hangisidir?",
+            "secenekler": ["Kumralim", "Dardayim",
+                           "Ben Seni Cok Sevdim", "Resimdeki Gozyaslari"],
+            "cevap": "B"
+        },
+
+        {
+            "soru": "Nisa'nin en sevdigi dizi hangisidir?",
+            "secenekler": ["Yargi", "Medcezir", "Sonyaz", "Kiralik Ask"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa hangi ulkeye gitmek ister?",
+            "secenekler": ["Italya", "Fransa", "Amerika", "Ispanya"],
+            "cevap": "D"
+        },
+
+        {
+            "soru": "Nisa sabah insani mi gece insani mi?",
+            "secenekler": ["Sabah insani", "Gece insani",
+                           "Ikisi de", "Hicbiri"],
+            "cevap": "B"
+        },
+
+        {
+            "soru": "Nisa sinirlendiginde genellikle ne yapar?",
+            "secenekler": ["Susup bekler",
+                           "Uyur",
+                           "Bazen sinirini sucsuz insanlardan cikarir",
+                           "Hemen ortamdan gider"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa en cok neye guler?",
+            "secenekler": ["Sadece komik videolara",
+                           "Sadece esprilere",
+                           "Hicbir seye",
+                           "Her seye"],
+            "cevap": "D"
+        },
+
+        {
+            "soru": "Nisa insanlarda en sevmedigi ozellik nedir?",
+            "secenekler": ["Sessiz olmak",
+                           "Insanlari kucuk dusurmek",
+                           "Cok konusmak",
+                           "Utangac olmak"],
+            "cevap": "B"
+        },
+
+        {
+            "soru": "Nisa insanlarda en cok hangi ozelligi sever?",
+            "secenekler": ["Kibirli olmak",
+                           "Cok konusmak",
+                           "Mutevazi olmak",
+                           "Cok ciddi olmak"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa'ya yapilabilecek en guzel surpriz nedir?",
+            "secenekler": ["Sadece pahali hediyeler",
+                           "Tatile goturmek",
+                           "Her sey",
+                           "Sadece cicek"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa alisveris yaparken en cok ne alir?",
+            "secenekler": ["Kitap", "Makyaj malzemesi",
+                           "Ayakkabi", "Teknolojik urun"],
+            "cevap": "B"
+        },
+
+        {
+            "soru": "Nisa telefonda en cok hangi uygulamayi kullanir?",
+            "secenekler": ["Instagram", "YouTube", "TikTok", "WhatsApp"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa'nin en buyuk hayallerinden biri nedir?",
+            "secenekler": ["Guzellik merkezi acmak",
+                           "Futbolcu olmak",
+                           "Yazar olmak",
+                           "Ogretmen olmak"],
+            "cevap": "A"
+        },
+
+        {
+            "soru": "Nisa'nin bir diger buyuk hayali nedir?",
+            "secenekler": ["Bir ada satin almak",
+                           "Butun dunyayi gezmek",
+                           "Uzaya gitmek",
+                           "Yarismaya katilmak"],
+            "cevap": "B"
+        },
+
+        {
+            "soru": "Nisa'yi en hizli ne mutlu eder?",
+            "secenekler": ["Sadece pahali hediyeler",
+                           "Sadece tatil",
+                           "Ufacik bir hediye bile",
+                           "Para"],
+            "cevap": "C"
+        },
+
+        {
+            "soru": "Nisa'nin en belirgin huyu nedir?",
+            "secenekler": ["Kiskanc olmasi",
+                           "Merhametli olmasi",
+                           "Sinirli olmasi",
+                           "Cok ciddi olmasi"],
+            "cevap": "B"
         }
-    }, 1500);
-}
+    ]
 
-function showResult() {
-    let resultMsg = score >= 60 ? "Tebrikler! Sorumluluk sınavını geçtin ve üniversite yolun açık! 🎓" : "Biraz daha çalışman gerekiyor, tekrar dene! 📚";
-    document.getElementById("quiz").innerHTML = `
-        <h2>Sınav Bitti!</h2>
-        <p style="font-size: 20px; font-weight: bold;">Toplam Puan: ${score} / 90</p>
-        <p>${resultMsg}</p>
-        <button onclick="location.reload()" style="margin-top:15px; width:100%;">Tekrar Oyna</button>
-    `;
-}
+    for i, soru in enumerate(sorular, 1):
 
-loadQuestion();
-</script>
+        print("\n" + "-" * 45)
+        print("SORU", i, "/ 20")
+        print("-" * 45)
 
-</body>
-</html>
+        print(soru["soru"])
 
-## 👩‍💻 Geliştirici
+        harfler = ["A", "B", "C", "D"]
 
-Nisa
+        for harf, secenek in zip(harfler, soru["secenekler"]):
+            print(harf + ") " + secenek)
 
-## 📌 Proje
+        cevap = input("\nCevabin: ").upper()
 
-Bu proje eğitim amacıyla hazırlanmıştır.
+        while cevap not in ["A", "B", "C", "D"]:
+            print("Lutfen A, B, C veya D gir.")
+            cevap = input("Cevabin: ").upper()
+
+        if cevap == soru["cevap"]:
+            puan += 1
+            seri += 1
+
+            print("\nDOGRU! 🎉")
+            print("Seri:", seri)
+            print("Skor:", puan, "/", i)
+
+            if seri == 3:
+                print("🔥 3'te 3! Nisa'yi baya iyi taniyorsun!")
+            elif seri == 5:
+                print("🔥🔥 5'te 5! Bu artik supheli...")
+            elif seri == 10:
+                print("🔥🔥🔥 10'da 10! Nisa'nin biyografisini mi okudun?")
+
+        else:
+            seri = 0
+
+            print("\nYANLIS! 😭")
+            print("Dogru cevap:", soru["cevap"])
+            print("Skor:", puan, "/", i)
+
+        time.sleep(1)
+
+    yuzde = (puan / 20) * 100
+
+    print("\n")
+    print("=" * 45)
+    print("             OYUN BITTI!")
+    print("=" * 45)
+
+    print("\nOyuncu:", oyuncu)
+    print("Toplam skor:", puan, "/ 20")
+    print("Basari orani: %", int(yuzde))
+
+    print("\nSONUCUN:")
+
+    if puan == 20:
+        print("🏆 EFSANE!")
+        print("Nisa'yi Nisa'dan bile iyi taniyorsun.")
+    elif puan >= 17:
+        print("🥇 MUKEMMEL!")
+        print("Nisa hakkinda baya saglam bilgiye sahipsin.")
+    elif puan >= 14:
+        print("🥈 COK IYI!")
+        print("Nisa seni sever, bu testten geciyorsun.")
+    elif puan >= 10:
+        print("🥉 ORTA!")
+        print("Biraz daha Nisa bilgisi lazim.")
+    elif puan >= 5:
+        print("😅 ZAYIF!")
+        print("Nisa seni tanisa bile sen Nisa'yi pek tanimiyorsun.")
+    else:
+        print("💀 FELAKET!")
+        print("Sen bu teste nasil girdin amk?")
+
+    print("\n" + "=" * 45)
+
+    tekrar = input("\nTekrar oynamak ister misin? (E/H): ").upper()
+
+    if tekrar != "E":
+        print("\nOynadigin icin tesekkurler", oyuncu + "!")
+        print("Gorusuruz 👋")
+        break
